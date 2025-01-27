@@ -20,10 +20,30 @@ import {
     optimismSepolia,
     sepolia,
 } from "viem/chains";
+import { defineChain } from "viem";
 import { WagmiProvider } from "wagmi";
 
 const projectId = "bc37f90dfcefc2900e5a86d366bf9aea";
 const queryClient = new QueryClient();
+
+export const besu = defineChain({
+    id: 31337,
+    name: 'Besu',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'Ether',
+      symbol: 'ETH',
+    },
+    rpcUrls: {
+      default: {
+        http: ['http://localhost:8545'],
+        webSocket: ['wss://localhost:8546'],
+      },
+    },
+    blockExplorers: {
+      default: { name: 'Besu Explorer', url: 'http://localhost' },
+    },
+})
 
 const config = getDefaultConfig({
     appName: "Sunodo",
@@ -31,6 +51,7 @@ const config = getDefaultConfig({
     chains:
         process.env.NODE_ENV === "development"
             ? [
+                  besu,
                   mainnet,
                   sepolia,
                   arbitrum,
@@ -42,6 +63,7 @@ const config = getDefaultConfig({
                   foundry,
               ]
             : [
+                  besu,
                   mainnet,
                   sepolia,
                   arbitrum,
